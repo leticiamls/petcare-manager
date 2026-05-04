@@ -1,35 +1,57 @@
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import NotFound from "@/pages/NotFound";
-import { Route, Switch } from "wouter";
+import { Route, Switch, useLocation } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
-import Home from "./pages/Home";
+import Login from "./pages/Login";
+import Dashboard from "./pages/Dashboard";
+import Clientes from "./pages/Clientes";
+import Pets from "./pages/Pets";
+import Veterinarios from "./pages/Veterinarios";
+import Consultas from "./pages/Consultas";
+import NotFound from "./pages/NotFound";
 
+/**
+ * Protected Route Component
+ * Redirects to login if not authenticated
+ */
+function ProtectedRoute({ component: Component }: { component: React.ComponentType }) {
+  const [, setLocation] = useLocation();
+  
+  const user = localStorage.getItem("user");
+  if (!user) {
+    setLocation("/login");
+    return null;
+  }
+
+  return <Component />;
+}
 
 function Router() {
   return (
     <Switch>
-      <Route path={"/"} component={Home} />
-      <Route path={"/404"} component={NotFound} />
+      <Route path="/login" component={Login} />
+      <Route path="/dashboard" component={() => <ProtectedRoute component={Dashboard} />} />
+      <Route path="/clientes" component={() => <ProtectedRoute component={Clientes} />} />
+      <Route path="/pets" component={() => <ProtectedRoute component={Pets} />} />
+      <Route path="/veterinarios" component={() => <ProtectedRoute component={Veterinarios} />} />
+      <Route path="/consultas" component={() => <ProtectedRoute component={Consultas} />} />
+      <Route path="/" component={() => <ProtectedRoute component={Dashboard} />} />
+      <Route path="/404" component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />
     </Switch>
   );
 }
 
-// NOTE: About Theme
-// - First choose a default theme according to your design style (dark or light bg), than change color palette in index.css
-//   to keep consistent foreground/background color across components
-// - If you want to make theme switchable, pass `switchable` ThemeProvider and use `useTheme` hook
-
+/**
+ * PetCare Manager - Neo-Playful Modernism Design
+ * Vibrant colors, rounded corners, friendly typography
+ */
 function App() {
   return (
     <ErrorBoundary>
-      <ThemeProvider
-        defaultTheme="light"
-        // switchable
-      >
+      <ThemeProvider defaultTheme="light">
         <TooltipProvider>
           <Toaster />
           <Router />
