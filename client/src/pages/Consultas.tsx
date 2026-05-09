@@ -101,7 +101,17 @@ export default function Consultas() {
     const savedConsultas = localStorage.getItem("consultas");
     const savedPets = localStorage.getItem("pets");
     const savedVeterinarios = localStorage.getItem("veterinarios");
-    if (savedConsultas) setConsultas(JSON.parse(savedConsultas));
+    if (savedConsultas) {
+      const parsed = JSON.parse(savedConsultas);
+      // Normalizar consultas antigas que não têm os novos campos
+      const normalized = parsed.map((c: any) => ({
+        ...c,
+        diagnosticos: c.diagnosticos || [],
+        remedios: c.remedios || [],
+        exames: c.exames || [],
+      }));
+      setConsultas(normalized);
+    }
     if (savedPets) setPets(JSON.parse(savedPets));
     if (savedVeterinarios) setVeterinarios(JSON.parse(savedVeterinarios));
   }, []);
@@ -116,7 +126,7 @@ export default function Consultas() {
       !formData.petId ||
       !formData.veterinarioId ||
       !formData.data ||
-      formData.diagnosticos.length === 0
+      (formData.diagnosticos && formData.diagnosticos.length === 0)
     ) {
       toast.error("Preencha todos os campos obrigatórios!");
       return;
