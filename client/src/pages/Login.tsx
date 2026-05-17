@@ -1,106 +1,148 @@
 import { useState } from "react";
 import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { useAuth } from "@/contexts/AuthContext";
+import { login as apiLogin } from "@/lib/api";
 import { toast } from "sonner";
-import { PawPrint } from "lucide-react";
+import { AlertCircle, PawPrint } from "lucide-react";
 
 /**
- * Login Page - Neo-Playful Modernism Design
- * Vibrant colors, rounded corners, friendly typography
+ * Login Page - Neo-Playful Modernism
+ * JWT Authentication with Backend Integration
  */
 export default function Login() {
   const [, setLocation] = useLocation();
+  const { login } = useAuth();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    if (!username.trim() || !password.trim()) {
-      toast.error("Preencha todos os campos!");
+    setError(null);
+
+    if (!username || !password) {
+      setError("Preencha usuário e senha");
       return;
     }
 
     setIsLoading(true);
-    
-    // Simular autenticação
-    setTimeout(() => {
-      localStorage.setItem("user", JSON.stringify({ username, isAuthenticated: true }));
-      toast.success(`Bem-vindo, ${username}!`);
-      setLocation("/dashboard");
+    try {
+      const response = await apiLogin(username, password);
+      login(
+        {
+          username: response.username,
+          role: response.role,
+        },
+        response.token
+      );
+      toast.success("Login realizado com sucesso!");
+      setLocation("/");
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "Erro ao fazer login";
+      setError(message);
+      toast.error(message);
+    } finally {
       setIsLoading(false);
-    }, 500);
+    }
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-yellow-50 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 flex items-center justify-center p-4">
       {/* Background decorative elements */}
       <div className="absolute top-10 left-10 w-20 h-20 rounded-full bg-yellow-300/20 blur-2xl"></div>
       <div className="absolute bottom-20 right-20 w-32 h-32 rounded-full bg-pink-300/20 blur-2xl"></div>
       <div className="absolute top-1/2 left-1/4 w-24 h-24 rounded-full bg-green-300/20 blur-2xl"></div>
 
-      <Card className="w-full max-w-md shadow-2xl border-4 border-blue-300 relative z-10">
-        <CardHeader className="text-center pb-2">
-          <div className="flex justify-center mb-4">
-            <div className="bg-gradient-to-br from-blue-400 to-pink-400 p-4 rounded-full">
+      <div className="w-full max-w-md relative z-10">
+        {/* Card Principal */}
+        <div className="bg-white rounded-3xl border-4 border-blue-300 shadow-2xl p-8">
+          {/* Logo e Título */}
+          <div className="text-center mb-8">
+            <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-purple-400 to-pink-400 rounded-full flex items-center justify-center shadow-lg">
               <PawPrint className="w-8 h-8 text-white" />
             </div>
+            <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-2">
+              PetCare Manager
+            </h1>
+            <p className="text-gray-600 font-medium">Gerencie seus pets com carinho</p>
           </div>
-          <CardTitle className="text-3xl text-blue-600">PetCare Manager</CardTitle>
-          <CardDescription className="text-lg text-gray-600 mt-2">
-            Gerencie seus pets com carinho
-          </CardDescription>
-        </CardHeader>
 
-        <CardContent>
-          <form onSubmit={handleLogin} className="space-y-4">
-            <div className="space-y-2">
-              <label className="block text-sm font-semibold text-gray-700">
+          {/* Formulário */}
+          <form onSubmit={handleLogin} className="space-y-5">
+            {/* Usuário */}
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
                 Usuário
               </label>
-              <Input
+              <input
                 type="text"
-                placeholder="Digite seu usuário"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                className="border-2 border-blue-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 text-base"
+                placeholder="Digite seu usuário"
+                className="w-full px-4 py-3 border-2 border-blue-300 rounded-xl focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all"
                 disabled={isLoading}
               />
             </div>
 
-            <div className="space-y-2">
-              <label className="block text-sm font-semibold text-gray-700">
+            {/* Senha */}
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
                 Senha
               </label>
-              <Input
+              <input
                 type="password"
-                placeholder="Digite sua senha"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="border-2 border-blue-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 text-base"
+                placeholder="Digite sua senha"
+                className="w-full px-4 py-3 border-2 border-blue-300 rounded-xl focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all"
                 disabled={isLoading}
               />
             </div>
 
+            {/* Erro */}
+            {error && (
+              <div className="bg-red-50 border-2 border-red-300 rounded-xl p-3 flex items-start gap-3">
+                <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
+                <p className="text-sm text-red-700 font-medium">{error}</p>
+              </div>
+            )}
+
+            {/* Botão Entrar */}
             <Button
               type="submit"
               disabled={isLoading}
-              className="w-full bg-gradient-to-r from-blue-400 to-blue-500 hover:from-blue-500 hover:to-blue-600 text-white font-bold py-3 rounded-lg text-base shadow-lg transform hover:scale-105 transition-transform"
+              className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-bold py-3 rounded-xl shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isLoading ? "Entrando..." : "Entrar"}
             </Button>
           </form>
 
-          <div className="mt-6 p-4 bg-yellow-50 border-2 border-yellow-300 rounded-lg">
-            <p className="text-sm text-gray-600 text-center">
-              <span className="font-semibold text-yellow-600">Demo:</span> Use qualquer usuário e senha
+          {/* Info Demo */}
+          <div className="mt-6 p-4 bg-yellow-50 border-2 border-yellow-300 rounded-xl">
+            <p className="text-xs text-yellow-800 font-semibold mb-2">📝 Credenciais de Demo:</p>
+            <p className="text-xs text-yellow-700">
+              <strong>Usuário:</strong> admin / vet
+            </p>
+            <p className="text-xs text-yellow-700">
+              <strong>Senha:</strong> senha123
             </p>
           </div>
-        </CardContent>
-      </Card>
+
+          {/* Links */}
+          <div className="mt-6 text-center space-y-2">
+            <button className="text-sm text-blue-600 hover:text-blue-700 font-medium transition-colors">
+              Esqueceu a senha?
+            </button>
+          </div>
+        </div>
+
+        {/* Rodapé */}
+        <p className="text-center text-gray-600 text-xs mt-6">
+          Backend: <span className="font-mono text-gray-700">http://localhost:8080</span>
+        </p>
+      </div>
     </div>
   );
 }

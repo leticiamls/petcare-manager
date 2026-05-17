@@ -1,0 +1,35 @@
+{
+  "build_command": "pnpm run build",
+  "capabilities": [],
+  "dev_command": "pnpm run dev",
+  "env_vars": {},
+  "experiments": null,
+  "git_remote": {
+    "repo_url": "s3://vida-prod-gitrepo/webdev-git/310519663076381965/VGnY88dkwwEv57pHbWoW9y",
+    "access_key_id": "ASIAZV3A2ECZNUHVTIQK",
+    "secret_access_key": "QgBR55Kay4TOQYRfAnyjbZe8wgTjoHe4FsBBRexT",
+    "session_token": "IQoJb3JpZ2luX2VjEOH//////////wEaCXVzLWVhc3QtMSJGMEQCIBNsqYjobWEcBFKBP2f2jr92j+z9iXUuD/vv0ZXkR3VHAiABnsDjOxrj2Fz1fGhh+50E7Hi1DviJmSj2QVUReM4FhSr+Awiq//////////8BEAQaDDY2NTM4NjA5ODg2NiIMCqudzDgx/YJdMkv7KtIDK2nX4xCTNinr5nG+G/xFlY02GxlkR5YXA0sKr66/oNbDnKVkCHw+ktl6RS+oZbip65csblo5hvB4AMf3bZffniydHYxsR5XBXKsl45bzerujgwXYHfED1EF3Eu0+GDJflrKamQ7dPmtrXyGAIIMzjAsw1WR6CrOTtjI2QtXYkIa8HGgrAE8SNy4+oDaBALDNbIbMor9jKbsIp/h1l7q9fDZxw9uSgzB5VwuXU5PvT03K05MGeCGeAjCDXIEBccbTV9+JhpsH15b/1i6J0/VMfXBbUH1qvVzdNhV70s5Di/g8Zor+8mPe3VzMoZz63VUJPyPon2DT3ET/RLs9ajB7P5shD1wj7ZmE9sLMjF7eLOyyizlX1/iS6lRfK862b8/6/O4JukO75Q5wMAMG56OloLUOvurzTIOav9kLC4ury0r7rQmLWCuPLCWxMFNcv9YHTCOxRznvW0p/pYpySnecmMtBlICJQNYP14K+JjvKX9qloAvjqMJNJGIfNN+ekmen8QSLKw+CumP4EnZLNkzZQZ2Fh3ww4+NJorlF4FNlV+2Aiem0ZUz3umHjXk/GzxVZEiVW0mDiOZDCkP2HYWABmr8+QZuA5kgcClTDlVuEMZdOPTD54KfQBjqeAT7D1e/OpyjhRG+WLMId542lTdk3BuU+5Z+E3pWm8pgWjftfSTJm7Ea6T+OAVpE3lLvW00J6++1Ou3qRw35zlWiF5mAR7E29n9vF7G55tHmDhExoc1D/PjhIJj8DiFhbE5uh+Nz7j/8uTvF0KboK4Q68wp+0A8w5jqbR1LWNQhDYDuFLLL54H9LAczHFzPZGWt9ivQyzIHzWXGP57AQe",
+    "expiration": "2026-05-18T04:44:41.000Z"
+  },
+  "name": "petcare-manager",
+  "path": "/home/ubuntu/petcare-manager",
+  "port": 3000,
+  "secrets": {
+    "BUILT_IN_FORGE_API_KEY": "KUeQU2L2vVTaGfgWc43Mum",
+    "BUILT_IN_FORGE_API_URL": "https://forge.manus.ai",
+    "JWT_SECRET": "Q9v2yA7ZSEnKmca5LR9GcE",
+    "OAUTH_SERVER_URL": "https://api.manus.im",
+    "OWNER_NAME": "Letícia Marreiro",
+    "OWNER_OPEN_ID": "MiARbxjpLsBLSNeASM3HV4",
+    "VITE_ANALYTICS_ENDPOINT": "https://manus-analytics.com",
+    "VITE_ANALYTICS_WEBSITE_ID": "8c9accbb-85fc-458e-9065-16807796ba6b",
+    "VITE_APP_ID": "VGnY88dkwwEv57pHbWoW9y",
+    "VITE_APP_LOGO": "https://files.manuscdn.com/user_upload_by_module/web_dev_logo/310519663076381965/zIKeauIsLTNXXSMo.png",
+    "VITE_APP_TITLE": "PetCare Manager",
+    "VITE_FRONTEND_FORGE_API_KEY": "LmHP3YkHQTw8vcZ5hTtdEY",
+    "VITE_FRONTEND_FORGE_API_URL": "https://forge.manus.ai",
+    "VITE_OAUTH_PORTAL_URL": "https://manus.im"
+  },
+  "template_id": "web-static",
+  "test_command": "pnpm test"
+}
